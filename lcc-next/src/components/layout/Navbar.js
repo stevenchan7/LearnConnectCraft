@@ -2,10 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import { Spin as Hamburger } from 'hamburger-react';
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
 	const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
 	const [isScroll, setIsScroll] = useState(false);
+
+	const pathname = usePathname();
+	const isHome = pathname === '/';
 
 	useEffect(() => {
 		// Add scroll event listener to the window
@@ -25,14 +29,14 @@ export default function Navbar() {
 	}, []);
 
 	return (
-		<header className={`${isScroll ? 'glass' : ''} p-4 fixed top-0 w-full z-50`} id='nav'>
+		<header className={`${isScroll | !isHome ? 'glass' : ''} px-4 py-2 fixed top-0 w-full z-50`} id='nav'>
 			<div className='w-full flex justify-between items-center h-16'>
 				{/* Logo  */}
 				<a rel='noopener noreferrer' data-href='/index.html' aria-label='Back to homepage' className='flex items-center p-2'>
 					<img src='/logo.png' alt='osr logo' className='w-32' />
 				</a>
 				{/* Nav links  */}
-				<ul className={`items-stretch hidden gap-3 text-lg ${isScroll ? 'glastext-primary_black' : 'text-primary_white'} font-medium lg:flex`}>
+				<ul className={`items-stretch hidden gap-3 ${isScroll | !isHome ? 'glastext-primary_black' : 'text-primary_white'} font-medium lg:flex`}>
 					<li className='flex'>
 						<a href='/' className='flex items-center px-4 -mb-1 border-b-2 border-transparent'>
 							Find Talent
@@ -44,7 +48,7 @@ export default function Navbar() {
 						</a>
 					</li>
 					<li className='flex'>
-						<a href='/' className='flex items-center px-4 -mb-1 border-b-2 border-transparent'>
+						<a href='/course' className='flex items-center px-4 -mb-1 border-b-2 border-transparent'>
 							Course
 						</a>
 					</li>
@@ -88,7 +92,7 @@ export default function Navbar() {
 					</a>
 				</li>
 				<li className='flex'>
-					<a href='/' className='flex items-center px-4 -mb-1 border-b-2 border-transparent'>
+					<a href='/course' className='flex items-center px-4 -mb-1 border-b-2 border-transparent'>
 						Course
 					</a>
 				</li>

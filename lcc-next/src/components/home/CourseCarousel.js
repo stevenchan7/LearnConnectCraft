@@ -20,7 +20,7 @@ export default function CourseCarousel() {
 					// install Swiper modules
 					modules={[Navigation]}
 					slidesPerView={1}
-					spaceBetween={50}
+					wspaceBetween={50}
 					navigation
 					breakpoints={{
 						1280: {

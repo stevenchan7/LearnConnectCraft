@@ -9,7 +9,12 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
+		"@chakra-ui/next-js": "^2.2.0",
+		"@chakra-ui/react": "^2.8.2",
+		"@emotion/react": "^11.11.1",
+		"@emotion/styled": "^11.11.0",
 		"@smastrom/react-rating": "^1.4.0",
+		"framer-motion": "^10.16.16",
 		"hamburger-react": "^2.5.0",
 		"next": "14.0.4",
 		"react": "^18",
@@ -17,6 +22,8 @@
 		"swiper": "^11.0.5"
 	},
 	"devDependencies": {
+		"@types/node": "20.10.5",
+		"@types/react": "18.2.45",
 		"autoprefixer": "^10.0.1",
 		"eslint": "^8",
 		"eslint-config-next": "14.0.4",

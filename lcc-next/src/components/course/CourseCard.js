@@ -9,7 +9,7 @@ const myStyles = {
 
 export default function CourseCard({ rating }) {
 	return (
-		<div className='p-4 mx-auto w-[320px] h-[320px] space-y-1 text-primary_black'>
+		<div className='p-4 mx-auto max-w-[320px] min-h-[320px] space-y-1 text-primary_black'>
 			<img src='/course1.png' alt='gambar course' />
 			{/* Title */}
 			<p className='font-medium'>Building Modern Web Application with Go (Golang)</p>
