@@ -63,12 +63,12 @@ export default function Navbar() {
 						</a>
 					</li>
 					<li className='flex ms-8'>
-						<a href='/' className='flex items-center px-4 -mb-1 border-b-2 border-transparent'>
+						<a href='/login' className='flex items-center px-4 -mb-1 border-b-2 border-transparent'>
 							Log In
 						</a>
 					</li>
 					<li className='flex'>
-						<a href='/' className='flex items-center px-5 py-3 bg-[#216FE3] text-primary_white rounded-full hover:scale-110'>
+						<a href='/register' className='flex items-center px-5 py-3 bg-[#216FE3] text-primary_white rounded-full hover:scale-110'>
 							Sign Up
 						</a>
 					</li>
@@ -109,12 +109,12 @@ export default function Navbar() {
 				<li className='flex'>
 					<ul className='flex gap-3 justify-center items-center'>
 						<li>
-							<a href='/' className='flex items-center px-4'>
+							<a href='/login' className='flex items-center px-4'>
 								Log In
 							</a>
 						</li>
 						<li>
-							<a href='/' className='flex items-center px-5 py-3 bg-[#216FE3]/40 rounded-full hover:scale-110'>
+							<a href='/register' className='flex items-center px-5 py-3 bg-[#216FE3]/40 rounded-full hover:scale-110'>
 								Sign Up
 							</a>
 						</li>

@@ -1,72 +1,57 @@
 const jwt = require('jsonwebtoken');
-
-const { Functionary } = require('../models/functionary');
-const { Role } = require('../models/role');
-const { Division } = require('../models/division');
-const { checkPassword } = require('../utils/auth.util');
+const { checkPassword, hashPassword } = require('../utils/auth.util');
+const { User } = require('../models/user');
 require('dotenv').config();
 
 const signUp = async (req, res) => {
 	try {
-		const { email, username, password, fullname, imageURL, roleID, divisionID } = req.body;
+		const { firstname, lastname, email, password, profilePict } = req.body;
 
 		const hashedPassword = await hashPassword(password);
 
-		const newFunctionary = {
+		const newUser = {
 			email: email,
-			username: username,
+			firstname: firstname,
+			lastname: lastname,
 			password: hashedPassword,
-			fullname: fullname,
-			image_url: imageURL,
-			role_id: parseInt(roleID),
-			division_id: parseInt(divisionID),
+			profile_pict: profilePict,
 		};
 
-		const addedFunctionary = await Functionary.create(newFunctionary);
+		const addedUser = await User.create(newUser);
 
-		res.status(201).json({ success: true, data: addedFunctionary });
+		res.status(201).json({ success: true, data: addedUser });
 	} catch (err) {
 		console.log(err);
 	}
 };
 
 const signIn = (req, res) => {
-	const { username, password } = req.body;
+	const { email, password } = req.body;
 
-	// Find functionary by username
-	Functionary.findOne({
-		where: { username: username },
-		include: [
-			{
-				model: Role,
-				attributes: ['id', 'title'],
-			},
-			{ model: Division, attributes: ['id', 'name'] },
-		],
+	// Find user by email
+	User.findOne({
+		where: { email: email },
 	})
-		.then((functionary) => {
-			if (!functionary) {
-				return res.status(400).json({ success: false, msg: 'Username is wrong' });
+		.then((user) => {
+			if (!user) {
+				return res.status(400).json({ success: false, msg: 'Wrong username or password' });
 			}
 
 			// Check password
-			checkPassword(password, functionary.password).then((isMatch) => {
+			checkPassword(password, user.password).then((isMatch) => {
 				if (!isMatch) {
-					return res.status(400).json({ success: false, msg: 'Password is wrong' });
+					return res.status(400).json({ success: false, msg: 'Wrong username or password' });
 				}
 
-				const functionaryData = {
-					id: functionary.id,
-					username: functionary.username,
-					name: functionary.fullname,
-					role: functionary.role.title,
-					division: functionary.division.name,
+				const userData = {
+					id: user.id,
+					fullname: user.firstname + ' ' + user.lastname,
 				};
 
 				// Create signed JWT
-				jwt.sign({ functionary: functionaryData }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' }, (err, token) => {
+				jwt.sign({ user: userData }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' }, (err, token) => {
 					// Send response
-					res.status(200).json({ success: true, token: token, data: functionaryData });
+					res.status(200).json({ success: true, token: token, data: userData, expiresIn: 3600 }); // 1h = 3600s
 				});
 			});
 		})

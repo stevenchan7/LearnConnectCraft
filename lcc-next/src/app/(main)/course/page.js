@@ -1,7 +1,7 @@
-import CourseCategory from '@/components/course/CourseCategory';
-import CourseReview from '@/components/course/CourseReview';
-import RecommendedCourse from '@/components/course/RecommendedCourse';
-import TopCourse from '@/components/course/TopCourse';
+import CourseCategory from '../../../components/course/CourseCategory';
+import CourseReview from '../../../components/course/CourseReview';
+import RecommendedCourse from '../../../components/course/RecommendedCourse';
+import TopCourse from '../../../components/course/TopCourse';
 
 export default function CourseHome() {
 	return (
