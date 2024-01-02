@@ -2,14 +2,39 @@
 
 import { useEffect, useState } from 'react';
 import { Spin as Hamburger } from 'hamburger-react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useToken } from '../../app/hooks/useToken';
+import { Avatar, AvatarBadge, AvatarGroup } from '@chakra-ui/react';
+import { Menu, MenuButton, MenuList, MenuItem, MenuItemOption, MenuGroup, MenuOptionGroup, MenuDivider } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
+import axios from 'axios';
+
+const ChevronDownIcon = () => {
+	return (
+		<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='w-6 h-6'>
+			<path strokeLinecap='round' strokeLinejoin='round' d='m19.5 8.25-7.5 7.5-7.5-7.5' />
+		</svg>
+	);
+};
 
 export default function Navbar() {
 	const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
 	const [isScroll, setIsScroll] = useState(false);
+	const isLoggedIn = useToken();
+	const router = useRouter();
 
 	const pathname = usePathname();
 	const isHome = pathname === '/';
+
+	const handleLogout = async (e) => {
+		try {
+			e.preventDefault();
+			localStorage.clear();
+			router.push('/login');
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
 	useEffect(() => {
 		// Add scroll event listener to the window
@@ -62,16 +87,40 @@ export default function Navbar() {
 							Why Us?
 						</a>
 					</li>
-					<li className='flex ms-8'>
-						<a href='/login' className='flex items-center px-4 -mb-1 border-b-2 border-transparent'>
-							Log In
-						</a>
-					</li>
-					<li className='flex'>
-						<a href='/register' className='flex items-center px-5 py-3 bg-[#216FE3] text-primary_white rounded-full hover:scale-110'>
-							Sign Up
-						</a>
-					</li>
+					{isLoggedIn ? (
+						<li className='flex ms-8'>
+							<Menu>
+								<MenuButton>
+									<div className='flex justify-center items-center'>
+										<Avatar name='Steven Chan' src={'sdasd'} />
+										<ChevronDownIcon />
+									</div>
+								</MenuButton>
+								<MenuList className='!text-primary_black'>
+									<MenuItem>
+										<form onSubmit={(e) => handleLogout(e)} className='w-full'>
+											<Button colorScheme='purple' type='submit' className='w-full'>
+												Logout
+											</Button>
+										</form>
+									</MenuItem>
+								</MenuList>
+							</Menu>
+						</li>
+					) : (
+						<>
+							<li className='flex ms-8'>
+								<a href='/login' className='flex items-center px-4 -mb-1 border-b-2 border-transparent'>
+									Log In
+								</a>
+							</li>
+							<li className='flex'>
+								<a href='/register' className='flex items-center px-5 py-3 bg-[#216FE3] text-primary_white rounded-full hover:scale-110'>
+									Sign Up
+								</a>
+							</li>
+						</>
+					)}
 				</ul>
 				{/* Hamburger button */}
 				<span className='cursor-pointer lg:hidden'>

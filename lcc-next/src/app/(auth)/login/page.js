@@ -1,6 +1,6 @@
 'use client';
 
-import { FormControl, FormLabel, FormErrorMessage, FormHelperText, Input } from '@chakra-ui/react';
+import { FormControl, FormLabel, Input } from '@chakra-ui/react';
 import { Alert, AlertIcon } from '@chakra-ui/react';
 import { Button } from '@chakra-ui/react';
 import PasswordInput from '../../../components/login/PasswordInput';
@@ -23,7 +23,7 @@ export default function page() {
 			});
 
 			// Set info at localstorage
-			localStorage.setItem('expAt', Date.now() + data.expiresIn);
+			localStorage.setItem('expAt', Date.now() + data.expiresIn * 1000);
 			localStorage.setItem('token', data.token);
 			localStorage.setItem('user', JSON.stringify(data.data));
 

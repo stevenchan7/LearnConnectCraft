@@ -2,8 +2,6 @@
 import RegisterCard from '../../../components/login/RegisterCard';
 
 export default function Login() {
-	// const [flash, setFlash] = useState(null);
-
 	return (
 		<div className='h-screen flex justify-center items-center'>
 			<div className='basis-2/5 w-full h-full bg-cover bg-right brightness-50' style={{ backgroundImage: "url('/login.jpg')" }} />

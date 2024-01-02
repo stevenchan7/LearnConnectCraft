@@ -1,9 +1,12 @@
 const express = require('express');
+const path = require('path');
 require('dotenv').config();
 const cors = require('cors');
 const { authenticateDB } = require('./utils/db.util');
 const { db } = require('./config/db.config');
 const authRouter = require('./routes/auth.route');
+const courseRouter = require('./routes/course.route');
+const sectionRouter = require('./routes/section.route');
 
 const app = express();
 
@@ -26,6 +29,7 @@ app.use(cors());
 // 		console.log(err);
 // 	}
 // });
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // Routes
 app.get('/', (req, res) => {
@@ -34,6 +38,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/auth', authRouter);
+app.use('/course', courseRouter);
+app.use('/section', sectionRouter);
 
 // Port
 const PORT = process.env.PORT;
