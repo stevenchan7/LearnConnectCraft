@@ -57,8 +57,8 @@ export default function Navbar() {
 		<header className={`${isScroll | !isHome ? 'glass' : ''} px-4 py-2 fixed top-0 w-full z-50`} id='nav'>
 			<div className='w-full flex justify-between items-center h-16'>
 				{/* Logo  */}
-				<a rel='noopener noreferrer' data-href='/index.html' aria-label='Back to homepage' className='flex items-center p-2'>
-					<img src='/logo.png' alt='osr logo' className='w-32' />
+				<a href='/' rel='noopener noreferrer' data-href='/index.html' aria-label='Back to homepage' className='flex items-center p-2'>
+					<img src='/lcc-logo.png' alt='osr logo' className='w-20' />
 				</a>
 				{/* Nav links  */}
 				<ul className={`items-stretch hidden gap-3 ${isScroll | !isHome ? 'glastext-primary_black' : 'text-primary_white'} font-medium lg:flex`}>
@@ -72,11 +72,13 @@ export default function Navbar() {
 							Find Work
 						</a>
 					</li>
-					<li className='flex'>
-						<a href='/course' className='flex items-center px-4 -mb-1 border-b-2 border-transparent'>
-							Course
-						</a>
-					</li>
+					{isLoggedIn && (
+						<li className='flex'>
+							<a href='/course' className='flex items-center px-4 -mb-1 border-b-2 border-transparent'>
+								Course
+							</a>
+						</li>
+					)}
 					<li className='flex'>
 						<a href='/' className='flex items-center px-4 -mb-1 border-b-2 border-transparent'>
 							Community

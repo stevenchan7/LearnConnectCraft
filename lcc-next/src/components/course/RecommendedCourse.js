@@ -9,8 +9,25 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/effect-coverflow';
 import CourseCard from '../course/CourseCard';
+import { getCourse } from '../../utils/course.util';
+import { useEffect, useState } from 'react';
 
 export default function RecommendedCourse() {
+	const [courses, setCourses] = useState([]);
+
+	const setCoursesData = async () => {
+		try {
+			const data = await getCourse();
+			setCourses(data.courses);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	useEffect(() => {
+		setCoursesData();
+	}, []);
+
 	return (
 		<div>
 			<h2 className='font-bold text-lg'>Recommeded for you</h2>
@@ -24,39 +41,18 @@ export default function RecommendedCourse() {
 					slideShadows: false,
 				}}
 				breakpoints={{
-					1536: {
-						slidesPerView: 3,
-					},
-					1280: {
-						slidesPerView: 3,
-					},
 					1024: {
 						slidesPerView: 3,
 					},
 				}}
 				navigation
 			>
-				<SwiperSlide>
-					<CourseCard rating={4} />
-				</SwiperSlide>
-				<SwiperSlide>
-					<CourseCard rating={4} />
-				</SwiperSlide>
-				<SwiperSlide>
-					<CourseCard rating={4} />
-				</SwiperSlide>
-				<SwiperSlide>
-					<CourseCard rating={4} />
-				</SwiperSlide>
-				<SwiperSlide>
-					<CourseCard rating={4} />
-				</SwiperSlide>
-				<SwiperSlide>
-					<CourseCard rating={4} />
-				</SwiperSlide>
-				<SwiperSlide>
-					<CourseCard rating={4} />
-				</SwiperSlide>
+				{courses.length > 0 &&
+					courses.map((course, index) => (
+						<SwiperSlide key={index}>
+							<CourseCard course={course} rating={4} />
+						</SwiperSlide>
+					))}
 			</Swiper>
 		</div>
 	);

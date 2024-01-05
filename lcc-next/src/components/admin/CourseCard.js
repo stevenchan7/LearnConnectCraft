@@ -1,17 +1,12 @@
-import { Card, CardHeader, CardBody, CardFooter, Image, Stack, Heading, Text, Button, ButtonGroup } from '@chakra-ui/react';
+import { Card, CardBody, CardFooter, Image, Stack, Heading, Text, Button, ButtonGroup } from '@chakra-ui/react';
 import Link from 'next/link';
 import { deleteCourseByID } from '../../utils/course.util';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import DeleteButtonDialog from './DeleteButtonDialog';
 
 export default function CourseCard({ course, setCoursesData }) {
-	const router = useRouter();
-
 	const handleDeleteButton = async () => {
 		try {
-			const res = await axios.post('http://localhost:5000/course/delete', {
-				id: course.id,
-			});
+			await deleteCourseByID(course.id);
 			setCoursesData();
 		} catch (err) {
 			console.log(err);
@@ -37,9 +32,7 @@ export default function CourseCard({ course, setCoursesData }) {
 						<Link href={`/admin/course/${course.id}`}>
 							<Button colorScheme='purple'>Detail</Button>
 						</Link>
-						<Button onClick={handleDeleteButton} colorScheme='red'>
-							Delete
-						</Button>
+						<DeleteButtonDialog handleDeleteButton={handleDeleteButton} />
 					</ButtonGroup>
 				</CardFooter>
 			</Stack>

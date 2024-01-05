@@ -8,8 +8,25 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import CourseCard from '../course/CourseCard';
+import { useEffect, useState } from 'react';
+import { getCourse } from '../../utils/course.util';
 
 export default function CourseCarousel() {
+	const [courses, setCourses] = useState([]);
+
+	const setCoursesData = async () => {
+		try {
+			const data = await getCourse();
+			setCourses(data.courses);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	useEffect(() => {
+		setCoursesData();
+	}, []);
+
 	return (
 		<div className='container mx-auto my-32 px-4 flex justify-center items-center lg:h-screen lg:my-0'>
 			<div className='w-full space-y-4'>
@@ -34,18 +51,12 @@ export default function CourseCarousel() {
 						},
 					}}
 				>
-					<SwiperSlide>
-						<CourseCard rating={4} />
-					</SwiperSlide>
-					<SwiperSlide>
-						<CourseCard rating={4} />
-					</SwiperSlide>
-					<SwiperSlide>
-						<CourseCard rating={4} />
-					</SwiperSlide>
-					<SwiperSlide>
-						<CourseCard rating={4} />
-					</SwiperSlide>
+					{courses.length > 0 &&
+						courses.map((course, index) => (
+							<SwiperSlide key={index}>
+								<CourseCard course={course} rating={4} />
+							</SwiperSlide>
+						))}
 				</Swiper>
 			</div>
 		</div>

@@ -21,7 +21,7 @@ const addCourse = async (req, res) => {
 
 const getCourse = async (req, res) => {
 	try {
-		const courses = await Course.findAll();
+		const courses = await Course.findAll({ order: [['createdAt', 'DESC']] });
 		res.status(200).json({ success: true, courses: courses });
 	} catch (err) {
 		console.log(err);

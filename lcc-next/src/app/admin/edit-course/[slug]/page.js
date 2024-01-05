@@ -26,6 +26,7 @@ export default function EditCoursePage({ params }) {
 	const [price, setPrice] = useState(null);
 	const [selectedOption, setSelectedOption] = useState(null);
 	const [selectedThumbnail, setSelectedThumbnail] = useState(null);
+	const [updatedThumbnail, setUpdatedThumbnail] = useState(null);
 	const [isDropzoneFile, setIsDropzoneFile] = useState(false);
 	const [isSuccess, setIsSuccess] = useState(false);
 	const router = useRouter();
@@ -52,12 +53,14 @@ export default function EditCoursePage({ params }) {
 		try {
 			e.preventDefault();
 
-			const formData = new FormData();
-			formData.append('thumbnail', selectedThumbnail);
+			if (isDropzoneFile) {
+				const formData = new FormData();
+				formData.append('thumbnail', selectedThumbnail);
 
-			const thumbnailResponse = await axios.post('http://localhost:5000/course/thumbnail', formData);
+				const thumbnailResponse = await axios.post('http://localhost:5000/course/thumbnail', formData);
 
-			const thumbnail = thumbnailResponse.data.filename; // Get thumbnail url from response
+				setUpdatedThumbnail(thumbnailResponse.data.filename); // Get thumbnail url from response
+			}
 
 			const courseResponse = await axios.post('http://localhost:5000/course/edit', {
 				id: id,
@@ -65,12 +68,15 @@ export default function EditCoursePage({ params }) {
 				desc: desc,
 				instructor: instructor,
 				price: price,
-				thumbnail: thumbnail,
+				thumbnail: isDropzoneFile ? updatedThumbnail : selectedThumbnail,
 				category: JSON.stringify(selectedOption),
 			});
 
 			console.log(courseResponse.data);
 			setIsSuccess(true);
+			setTimeout(() => {
+				router.push('/admin/course');
+			}, 1000);
 		} catch (err) {
 			console.log(err);
 		}
@@ -98,7 +104,7 @@ export default function EditCoursePage({ params }) {
 			{/* Success alert end */}
 			<div className='container px-4 mx-auto flex flex-col justify-center items-center'>
 				<div className='max-w-4xl w-full border rounded p-4'>
-					<h1 className='text-4xl text-center'>New Course Form</h1>
+					<h1 className='text-4xl text-center'>Course Form</h1>
 					<h2 className='text-xl mt-8'>Course Information</h2>
 					<form onSubmit={(e) => handleFormSubmit(e)} className='space-y-2 mt-4'>
 						{/* Course title */}
@@ -136,8 +142,6 @@ export default function EditCoursePage({ params }) {
 							</div>
 							<img src={isDropzoneFile ? URL.createObjectURL(selectedThumbnail) : `http://localhost:5000/${selectedThumbnail}`} alt='selected thumbnail' className='aspect-square w-[10rem]' />
 						</FormControl>
-
-						{/* <div className='text-center'> */}
 						<ButtonGroup className='w-full justify-center'>
 							<Button colorScheme='purple' type='submit'>
 								Update
@@ -146,7 +150,6 @@ export default function EditCoursePage({ params }) {
 								Cancel
 							</Button>
 						</ButtonGroup>
-						{/* </div> */}
 					</form>
 				</div>
 			</div>

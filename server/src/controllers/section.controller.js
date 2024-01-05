@@ -12,6 +12,18 @@ const getSectionByCourseID = async (req, res) => {
 	}
 };
 
+const getSectionByID = async (req, res) => {
+	try {
+		const { id } = req.params;
+
+		const section = await Section.findOne({ where: { id: id } });
+
+		res.status(201).json({ success: true, section: section });
+	} catch (err) {
+		console.log(err);
+	}
+};
+
 const addSection = async (req, res) => {
 	try {
 		const { title, desc, video, courseId } = req.body;
@@ -29,4 +41,38 @@ const addSection = async (req, res) => {
 	}
 };
 
-module.exports = { addSection, getSectionByCourseID };
+const postEditSectionByID = async (req, res) => {
+	try {
+		const { id, title, desc, video } = req.body;
+
+		const updatedSection = {
+			title: title,
+			description: desc,
+			video: video,
+		};
+
+		const section = await Section.update(updatedSection, {
+			where: {
+				id: id,
+			},
+		});
+
+		res.status(200).json({ success: true, data: section });
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+const deleteSectionByID = async (req, res) => {
+	try {
+		const { id } = req.body;
+
+		await Section.destroy({ where: { id: id } });
+
+		res.status(201).json({ success: true });
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+module.exports = { addSection, getSectionByCourseID, getSectionByID, postEditSectionByID, deleteSectionByID };

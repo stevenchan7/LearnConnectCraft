@@ -7,6 +7,7 @@ export async function getCourseByID(id) {
 		return data;
 	} catch (err) {
 		console.log(err);
+		throw new Error();
 	}
 }
 
@@ -22,10 +23,9 @@ export async function getCourse() {
 
 export async function deleteCourseByID(id) {
 	try {
-		const res = await axios.delete('http://localhost:5000/course', {
+		const res = await axios.post('http://localhost:5000/course/delete', {
 			id: id,
 		});
-		console.log(res);
 	} catch (err) {
 		console.log(err);
 		throw new Error();

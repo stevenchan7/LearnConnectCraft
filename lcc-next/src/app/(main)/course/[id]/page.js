@@ -1,14 +1,14 @@
 'use client';
 
-import { Heading, SimpleGrid, Button, Link } from '@chakra-ui/react';
+import { Heading, SimpleGrid, Button, Link, Card, CardBody } from '@chakra-ui/react';
 import { getCourseByID } from '../../../../utils/course.util';
 import { useEffect, useState } from 'react';
 import { getSectionByCourseID } from '../../../../utils/section.util';
 import NextLink from 'next/link';
 import SectionCard from '../../../../components/admin/SectionCard';
 
-export default function CourseDetail({ params }) {
-	const id = params.slug;
+export default function CoursePage({ params }) {
+	const id = params.id;
 	const [title, setTitle] = useState('');
 	const [desc, setDesc] = useState('');
 	const [instructor, setInstructor] = useState('');
@@ -37,8 +37,8 @@ export default function CourseDetail({ params }) {
 	}, []);
 
 	return (
-		<div className='container mx-auto px-4'>
-			<Link colorScheme='purple' as={NextLink} href='/admin/course'>
+		<div className='container mx-auto px-4 my-[128px]'>
+			<Link colorScheme='purple' as={NextLink} href='/course'>
 				Course
 			</Link>
 			<div className='mt-8 space-y-4'>
@@ -47,14 +47,21 @@ export default function CourseDetail({ params }) {
 				<p className='font-medium'>Instructor: {instructor}</p>
 			</div>
 			<div className='mt-8 space-y-2'>
-				<div className='flex justify-between items-center'>
-					<p className='font-bold'>Course Content</p>
-					<Link as={NextLink} href={`/admin/add-section/${id}`}>
-						<Button colorScheme='purple'>Add section</Button>
-					</Link>
-				</div>
+				<p className='font-bold'>Course Content</p>
 				<SimpleGrid columns={1} spacing={4}>
-					{sections.length > 0 ? sections.map((section, index) => <SectionCard key={index} section={section} setSectionData={setSectionData} index={index} courseId={id} />) : 'Tidak ada section'}
+					{sections.length > 0
+						? sections.map((section, index) => (
+								<Link as={NextLink} href={`/course/${id}/section/${section.id}`}>
+									<Card direction={'row'} className='items-center'>
+										<CardBody>
+											<p className='font-semibold'>
+												Section {index + 1}: {section.title}
+											</p>
+										</CardBody>
+									</Card>
+								</Link>
+						  ))
+						: 'Tidak ada section'}
 				</SimpleGrid>
 			</div>
 		</div>
